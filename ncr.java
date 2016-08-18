@@ -2,12 +2,13 @@ package combinatorics;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.math.BigInteger;
 import java.util.Arrays;
 
 public class ncr {
 
 	public static int T, N[];
-	public static int[] nCrValues = new int[1001];
+	public static BigInteger[] nCrValues = new BigInteger[1001];
 	
 	public static void readInput() throws Exception{
 		
@@ -26,7 +27,7 @@ public class ncr {
 	      }
 	}
 	public static void 		resetnCrValues(){
-		Arrays.fill(nCrValues , 0 );
+		Arrays.fill(nCrValues , new BigInteger("0") );
 	}
 	public static void solveInput( int n ){
 		//reset nCrValues values to 0. 
@@ -35,25 +36,30 @@ public class ncr {
 
 		resetnCrValues();
 		for(int r=0; r <=n ;r++){
-			System.out.print( calculateNCR( n , r ) +" ");
+			BigInteger tenPow9 = new BigInteger("1000000000");
+			System.out.print( calculateNCR( n , r ).mod( tenPow9 ) +" ");
 		}
+        System.out.println();
+
 	}
-	public static int calculateNCR( int n, int r  ){
+	public static BigInteger calculateNCR( int n, int r  ){
 		if(r==0){
-			nCrValues[r] = 1;
+			nCrValues[r] = new BigInteger("1");
 			return nCrValues[r];
 		}
 		if( r==1 ){
-			nCrValues[r] = n;
+			nCrValues[r] = new BigInteger(Integer.toString(n) );
 			return nCrValues[r];
 		}
-		if(nCrValues[r]!=0){
+		if(nCrValues[r].compareTo(new BigInteger(Integer.toString(0)))!=0){
 			return nCrValues[r];
 		}
 		else {
-			nCrValues[r] = calculateNCR( n , r-1) * ( n - r + 1)/r;
+			BigInteger bigNminusR = new BigInteger(Integer.toString(( n - r + 1)));
+			BigInteger bigR = new BigInteger(Integer.toString(r));
+			nCrValues[r] = calculateNCR( n , r-1).multiply( bigNminusR ).divide( bigR );
 			return nCrValues[r];
-		}
+		}	
 	}
 	public static void main(String[] args) throws Exception{
 		// TODO Auto-generated method stub
