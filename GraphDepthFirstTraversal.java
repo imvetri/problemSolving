@@ -67,19 +67,6 @@ class TestClass {
 		}
 	}
 	
-	//get all path from last junction to any of entrances
-	public static void pathsFromCounterToEntrances(int junction){
-		System.out.println("JUNCTION  "+(junction+1));
-		//depth first search and store them
-		int length = graph.length;
-		for(int i=0;i<graph.length;i++){
-			if(graph[junction][i]!=0){
-				System.out.print( Integer.toString(graph[junction][i])+" ->  " ) ;
-				pathsFromCounterToEntrances(i);
-			}
-		}
-		
-	}
 	//just read from STDin and save it in global variable. no nothing else
 	public static void  readInput()  throws Exception {
 
