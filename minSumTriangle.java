@@ -1,8 +1,6 @@
 package combinatorics;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.util.Scanner;
 
 public class minSumTriangle {
 
@@ -17,40 +15,13 @@ public class minSumTriangle {
 	}
 	public static void readTriangle(){
 		 try{
-	         // open input stream test.txt for reading purpose.
-	         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-	         triangleHeight = Integer.parseInt(br.readLine());
+			 Scanner sc=new Scanner(System.in);  
+
+	         triangleHeight = sc.nextInt();
 	         initTriangleArray( triangleHeight );
-	         System.out.println(nextLong(br));
 	      }catch(Exception e){
 	         e.printStackTrace();
 	      }
-	}
-	/*
-	 * reads from stdin and returns a integer
-	 */
-	public static long nextLong( BufferedReader br )throws IOException{
-		long number=0;
-		int input = br.read();
-		int sign = ((char)input=='-') ? -1 : 1; 
-		boolean firstChar = true;
-		while(input!=-1 && input!=' ' && input!=13){
-			if(firstChar){
-				if(sign == -1){
-					input= br.read();
-				}
-				else{
-					number = Character.getNumericValue( input );
-					input = br.read();
-				}
-				firstChar = !firstChar;
-			}
-			else{
-				number = number*10 +Character.getNumericValue( input );
-				input =br.read();
-			}	
-		}
-		return sign*number;
 	}
 	public static void initTriangleArray( int height ){
 		triangle = new long[height][];
