@@ -21,3 +21,13 @@ All puzzles wich are not data structure related goes here
 ##New Habbits
 1. Started looking for patterns
 2. Memoization technique made sense here
+
+
+# Triangle Project euler
+
+##Lesson Learned
+1. Dont try to write your own IO
+
+##New habbit
+1. Talk to others about problem you are facing
+2. Started using scanner
