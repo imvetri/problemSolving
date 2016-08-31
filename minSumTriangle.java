@@ -7,6 +7,8 @@ public class minSumTriangle {
 	//store the input in a 2 d array
 	public static long[][] triangle;
 	public static int triangleHeight ;
+	public static MinHeap minHeap;
+	public static int noOfSums=0;
 	//store subTrianglesValues?
 	public static long[][] subTrianglesSum; //subTriangle[ triangleSize ][ numberOfTriangles ] = sum of TriangleStize 
 	public static void main(String[] args)throws Exception {
@@ -15,12 +17,19 @@ public class minSumTriangle {
 		initSubTrianglesSumsArray();
 		//tests();
 
+		minHeap = new MinHeap(noOfSums);
 
 		for(int i=0;i<triangleHeight;i++){
 			for(int j=0;j<=i;j++){
 				sumTriangleFrom(i , j , triangleHeight-i-1);
 			}
 		}
+
+        minHeap.minHeap();
+        System.out.println( minHeap.remove() );  
+        System.out.println( minHeap.remove() );  
+        System.out.println( minHeap.remove() );  
+        System.out.println( minHeap.remove() );   
 	}
 	public static void readTriangle() throws Exception{
 
@@ -43,6 +52,7 @@ public class minSumTriangle {
 		subTrianglesSum = new long[triangleHeight][];
 		for(int i=0; i < triangleHeight ; i++){
 			int n = (triangleHeight-i)*(triangleHeight-i+1)/2; // n*(n+1)/2
+			noOfSums+= n ;
 			subTrianglesSum[i] = new long[n]; 
 		}
 	}
@@ -102,6 +112,7 @@ public class minSumTriangle {
 		else if(subTrianglesSum[depth][x+y]==0){
 			subTrianglesSum[depth][x+y] = sumTriangleFrom( x, y, depth-1) + sumOfLine( depth , y, depth+1);
 		}
+		minHeap.insert(subTrianglesSum[depth][x+y]);
 		return subTrianglesSum[depth][x+y];
 	}
 	
@@ -140,3 +151,111 @@ public class minSumTriangle {
 		return sum;
 	}
   }
+
+
+ class MinHeap
+{
+    private long[] Heap;
+    private int size;
+    private int maxsize;
+ 
+    private static final int FRONT = 1;
+ 
+    public MinHeap(int maxsize)
+    {
+        this.maxsize = maxsize;
+        this.size = 0;
+        Heap = new long[this.maxsize + 1];
+        Heap[0] = Integer.MIN_VALUE;
+    }
+ 
+    private int parent(int pos)
+    {
+        return pos / 2;
+    }
+ 
+    private int leftChild(int pos)
+    {
+        return (2 * pos);
+    }
+ 
+    private int rightChild(int pos)
+    {
+        return (2 * pos) + 1;
+    }
+ 
+    private boolean isLeaf(int pos)
+    {
+        if (pos >=  (size / 2)  &&  pos <= size)
+        { 
+            return true;
+        }
+        return false;
+    }
+ 
+    private void swap(int fpos, int spos)
+    {
+        long tmp;
+        tmp = Heap[fpos];
+        Heap[fpos] = Heap[spos];
+        Heap[spos] = tmp;
+    }
+ 
+    private void minHeapify(int pos)
+    {
+        if (!isLeaf(pos))
+        { 
+            if ( Heap[pos] > Heap[leftChild(pos)]  || Heap[pos] > Heap[rightChild(pos)])
+            {
+                if (Heap[leftChild(pos)] < Heap[rightChild(pos)])
+                {
+                    swap(pos, leftChild(pos));
+                    minHeapify(leftChild(pos));
+                }else
+                {
+                    swap(pos, rightChild(pos));
+                    minHeapify(rightChild(pos));
+                }
+            }
+        }
+    }
+ 
+    public void insert(long element)
+    {
+        Heap[++size] = element;
+        int current = size;
+ 
+        while (Heap[current] < Heap[parent(current)])
+        {
+            swap(current,parent(current));
+            current = parent(current);
+        }	
+    }
+ 
+    public void print()
+    {
+        for (int i = 1; i <= size / 2; i++ )
+        {
+            System.out.print(" PARENT : " + Heap[i] + " LEFT CHILD : " + Heap[2*i] 
+                + " RIGHT CHILD :" + Heap[2 * i  + 1]);
+            System.out.println();
+        } 
+    }
+ 
+    public void minHeap()
+    {
+        for (int pos = (size / 2); pos >= 1 ; pos--)
+        {
+            minHeapify(pos);
+        }
+    }
+ 
+    public long remove()
+    {
+        long popped = Heap[FRONT];
+        Heap[FRONT] = Heap[size--]; 
+        minHeapify(FRONT);
+        return popped;
+    }
+ 
+}
